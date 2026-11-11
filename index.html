@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watch the Games, Not the Scores</title>
+<meta name="description" content="Concept microsite: a live-first ESPN app landing screen. Get live sports now and 1 month of ESPN+ free.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --red:#D00000; --red-dark:#A30000; --ink:#0E0E0E; --ink-2:#1B1B1B;
+    --paper:#FFFFFF; --mist:#F2F2F2; --muted:#6B6B6B; --line:#E2E2E2;
+    --live:#FFD400;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{background:#2a2a2a}
+  body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#2a2a2a;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .screen{max-width:440px;margin:0 auto;background:var(--paper);min-height:100vh;box-shadow:0 0 60px rgba(0,0,0,.5);overflow:hidden}
+  h1,h2,.display,.num,.wordmark,.thanks h3{font-family:"Barlow Condensed","DejaVu Sans Condensed",Impact,sans-serif;font-stretch:condensed;font-style:italic;text-transform:uppercase;letter-spacing:-.005em;line-height:.95}
+  section{padding:40px 22px}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+
+  /* 1. HERO */
+  .hero{background:radial-gradient(120% 60% at 85% 0%,rgba(208,0,0,.30),transparent 60%),radial-gradient(90% 40% at 0% 75%,rgba(208,0,0,.14),transparent 70%),linear-gradient(180deg,#151515,#0a0a0a);color:#fff;padding:22px 22px 36px;position:relative}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+  .wordmark{font-family:"Barlow Condensed";font-weight:800;font-size:20px;letter-spacing:.04em}
+  .wordmark b{color:var(--red)}
+  .pill{font-size:11px;font-weight:700;border:1px solid #444;border-radius:99px;padding:4px 10px;color:#bbb}
+  .hero h1{font-size:64px;font-weight:800;margin-bottom:16px}
+  .hero h1 span{color:var(--red)}
+  .hero .sub{font-size:17px;color:#cfcfcf;margin-bottom:24px}
+  .btn{display:block;width:100%;border:0;border-radius:10px;background:linear-gradient(180deg,#E31B1B,#B00000);box-shadow:0 8px 20px rgba(208,0,0,.28),inset 0 1px 0 rgba(255,255,255,.18);color:#fff;font:700 18px/1.2 Inter,sans-serif;padding:17px 18px;text-align:center;text-decoration:none;cursor:pointer;transition:background .15s, transform .1s}
+  .btn small{display:block;font-weight:500;font-size:13px;opacity:.9;margin-top:3px}
+  .btn:hover{background:linear-gradient(180deg,#C80000,#8F0000)}
+  .btn:active{transform:scale(.98)}
+
+  /* phone mockup */
+  .phone{position:relative;margin:34px auto 0;width:252px;border-radius:44px;padding:9px;background:linear-gradient(145deg,#5a5d63 0%,#2b2d31 18%,#1a1b1e 50%,#3a3c41 82%,#6b6e74 100%);box-shadow:0 0 0 1px #0a0a0a,inset 0 0 0 1.5px rgba(255,255,255,.18),0 30px 60px rgba(0,0,0,.6),0 10px 40px rgba(208,0,0,.22)}
+  .phone:before{content:"";position:absolute;left:-3px;top:110px;width:3px;height:44px;border-radius:2px 0 0 2px;background:linear-gradient(90deg,#55585e,#2a2c30);box-shadow:0 56px 0 #3a3c41}
+  .phone:after{content:"";position:absolute;right:-3px;top:130px;width:3px;height:70px;border-radius:0 2px 2px 0;background:linear-gradient(90deg,#2a2c30,#55585e)}
+  .phone-in{position:relative}
+  .phone-in:after{content:"";position:absolute;inset:0;border-radius:36px;pointer-events:none;background:linear-gradient(115deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 28%,transparent 42%)}
+  .phone-in{border-radius:36px;overflow:hidden;background:#000;box-shadow:inset 0 0 0 2px #000}
+  .notch{position:absolute;top:8px;left:0;right:0;z-index:3;height:22px;display:flex;justify-content:center;align-items:center;background:transparent}
+  .notch i{width:76px;height:22px;border-radius:12px;background:#000}
+  .game{position:relative;height:340px;background:
+      radial-gradient(ellipse at 50% 120%, #2f8f3a 0 55%, transparent 56%),
+      linear-gradient(#1a3d6e,#0c1c33 60%, #1f6b2a 60%, #2b8a35);}
+  .game .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+  .live{position:absolute;top:40px;left:10px;background:var(--red);color:#fff;font:800 11px Inter;padding:3px 7px;border-radius:4px;display:flex;gap:5px;align-items:center}
+  .live:before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;animation:pulse 1.2s infinite}
+  @keyframes pulse{50%{opacity:.2}}
+  .score{position:absolute;top:40px;right:10px;background:rgba(0,0,0,.7);color:#fff;font:700 11px Inter;padding:4px 8px;border-radius:4px}
+  .score em{font-style:normal;color:var(--live)}
+  .playing{position:absolute;bottom:10px;left:10px;right:10px;color:#fff;font-size:11px;background:rgba(0,0,0,.55);padding:6px 8px;border-radius:6px}
+  .playing b{display:block;font-size:12px}
+  .ticker{background:#000;color:#fff;font:600 11px Inter;white-space:nowrap;overflow:hidden;border-top:2px solid var(--red)}
+  .ticker-track{display:inline-flex;gap:8px;padding:8px 0;animation:scroll 18s linear infinite}
+  .chip{background:#1e1e1e;border-radius:5px;padding:5px 8px}
+  .chip.on{background:var(--red)}
+  @keyframes scroll{to{transform:translateX(-50%)}}
+  /* app screen inside phone */
+  .app{background:#0c0c0c;color:#fff;padding:12px 0 6px}
+  .statusbar{display:flex;justify-content:space-between;font:600 10px Inter;padding:2px 22px 10px;color:#ddd}
+  .appbar{display:flex;justify-content:space-between;align-items:center;padding:0 12px 8px}
+  .appname{font-family:"Barlow Condensed","DejaVu Sans Condensed",sans-serif;font-style:italic;font-weight:800;font-size:18px;text-transform:uppercase}
+  .prov{font:600 9px Inter;color:#9fe39f;background:rgba(80,200,80,.12);padding:3px 6px;border-radius:99px}
+  .video{position:relative;aspect-ratio:16/9;background:#000}
+  .video .shot{width:100%;height:100%;object-fit:cover;display:block}
+  .video .live{top:6px;left:6px}
+  .clock{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.65);font:700 10px Inter;padding:3px 6px;border-radius:4px}
+  .bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.25)}
+  .bar i{display:block;height:100%;width:100%;background:var(--red)}
+  .nowplaying{padding:8px 12px 10px;border-bottom:1px solid #222}
+  .nowplaying b{display:block;font-size:12px}
+  .nowplaying span{font-size:10px;color:#aaa}
+  .also{font:700 9px Inter;letter-spacing:.12em;text-transform:uppercase;color:#888;padding:10px 12px 4px}
+  .row{display:flex;align-items:center;gap:8px;padding:7px 12px;font-size:11px;border-bottom:1px solid #1c1c1c}
+  .row .lg{font:700 8px Inter;color:#bbb;background:#222;border-radius:3px;padding:2px 4px;width:40px;text-align:center}
+  .row .tm{flex:1;font-weight:600}
+  .row .w{font:700 9px Inter;color:#fff;background:var(--red);border-radius:99px;padding:3px 7px}
+  .caption{text-align:center;color:#8a8a8a;font-size:12px;margin-top:12px}
+
+  /* 2. INCENTIVE */
+  .old-incentive{background:linear-gradient(120deg,#A80000 0%,#D80000 50%,#A80000 100%);color:#fff;text-align:center;padding:26px 22px}
+  .incentive .display{font-size:38px;font-weight:800}
+  .incentive p{font-size:15px;opacity:.95;margin-top:6px}
+
+  /* 3. BENEFITS */
+  .benefits{background:linear-gradient(180deg,#F6F6F6,#ECECEC)}
+  .benefits h2,.steps h2,.signup h2{font-size:38px;font-weight:800;margin:6px 0 22px}
+  .card{background:#fff;border-radius:14px;padding:20px;margin-bottom:14px;border-left:5px solid var(--red);display:flex;gap:14px}
+  .ico{flex:0 0 42px;height:42px;border-radius:10px;background:var(--ink);display:grid;place-items:center}
+  .ico svg{width:22px;height:22px}
+  .card q{display:block;font-weight:700;font-size:17px;line-height:1.3;quotes:"\201C" "\201D"}
+  .card p{color:var(--muted);font-size:14px;margin-top:4px}
+
+  /* 4. HOW IT WORKS */
+  .step{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .step:last-child{border:0}
+  .num{flex:0 0 44px;height:44px;border-radius:50%;background:linear-gradient(160deg,#E31B1B,#A80000);color:#fff;font-weight:800;font-size:24px;display:grid;place-items:center}
+  .step h3{font-size:17px;line-height:1.3}
+  .step p{color:var(--muted);font-size:14px;margin-top:2px}
+
+  /* 5. SIGNUP */
+  .signup{background:radial-gradient(110% 55% at 50% 110%,rgba(208,0,0,.26),transparent 65%),linear-gradient(180deg,#121212,#0a0a0a);color:#fff}
+  .signup h2{color:#fff}
+  label{display:block;font-weight:600;font-size:15px;margin-bottom:10px;color:#e6e6e6}
+  input[type=email]{width:100%;font:500 17px Inter;padding:16px;border-radius:10px;border:2px solid #333;background:#1b1b1b;color:#fff;margin-bottom:12px}
+  input[type=email]:focus{outline:none;border-color:var(--red)}
+  .fine{font-size:12px;color:#8a8a8a;margin-top:12px;text-align:center}
+  .thanks{display:none;text-align:center;background:#1b1b1b;border:2px solid var(--red);border-radius:14px;padding:22px;text-align:center}
+  .thanks .check{width:52px;height:52px;border-radius:50%;background:linear-gradient(160deg,#E31B1B,#A80000);display:grid;place-items:center;margin:0 auto 12px}
+  .thanks h3{font-weight:800;font-size:30px}
+  .thanks p{color:#cfcfcf;margin-top:6px}
+  .done form{display:none}
+  .done .thanks{display:block}
+
+  /* 6. FOOTER */
+  footer{background:#000;color:#8a8a8a;text-align:left;font-size:13px;padding:26px 22px 30px}
+
+  /* section tags (match brief's 6-section anatomy) */
+  .tag{display:inline-block;font:700 10px Inter;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(208,0,0,.12);color:var(--red);margin-bottom:10px}
+  .hero .tag,.signup .tag,.cta .tag{background:rgba(255,255,255,.12);color:#fff}
+  .for{font-size:13px;font-weight:600;color:#ff8a8a;letter-spacing:.02em;margin-bottom:12px}
+  .under{font-size:13px;color:#bdbdbd;margin-top:10px;text-align:center}
+  .pain{font-size:16px;color:#444;margin:-10px 0 22px}
+  /* 4. INCENTIVE + CTA */
+  .cta{background:radial-gradient(100% 80% at 50% 0%,rgba(255,255,255,.12),transparent 60%),linear-gradient(135deg,#9E0000,#D40000 55%,#A00000);color:#fff;text-align:center}
+  .cta .display{font-size:46px;font-weight:800;margin:4px 0 12px}
+  .cta p{font-size:16px;opacity:.95;margin-bottom:22px}
+  .cta .btn{background:#fff;color:#B00000;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+  /* lead form: form + thank-you side by side in the PDF */
+  .after{font:700 10px Inter;letter-spacing:.12em;text-transform:uppercase;color:#8a8a8a;margin-bottom:10px}
+  /* footer launch plan */
+  .foot-main{color:#fff;font-weight:700;font-size:14px;margin-bottom:16px}
+  .foot-grid{display:grid;gap:14px;text-align:left;font-size:12px;line-height:1.5;color:#9a9a9a}
+  .foot-grid h4{font:700 10px Inter;letter-spacing:.12em;text-transform:uppercase;color:#ddd;margin-bottom:4px}
+  .foot-grid b{color:#ddd}
+
+  /* PDF: show the form AND the thank-you state */
+  .print-label{display:none}
+  @media print{
+    @page{size:440px auto;margin:0}
+    html,body{background:#fff}
+    .screen{box-shadow:none}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;animation:none!important}
+    .thanks{display:block}
+    .print-label{text-align:left!important;margin:22px 0 10px!important}
+    .print-label{display:block;font-size:11px;color:#8a8a8a;text-align:center;margin:18px 0 8px;letter-spacing:.1em;text-transform:uppercase}
+    section,.card,.step{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<main class="screen" id="top">
+
+  <!-- 1. HERO -->
+  <header class="hero">
+    <div class="topbar">
+      <div class="wordmark">LIVE <b>FIRST</b></div>
+      <div class="pill">Coming soon to the ESPN app</div>
+    </div>
+    <div class="tag">1 · Hero</div>
+    <p class="for">For fans who sign in to ESPN with their TV provider</p>
+    <h1>Watch the games, <span>not the scores.</span></h1>
+    <p class="sub">Soon, opening the ESPN app means you're already watching. A new live-first home screen plays the games your TV provider includes, with every other live game one tap away.</p>
+    <a class="btn" href="#signup">Get live sports + my free month</a>
+    <p class="under">1 month of ESPN+ free + early access to the live-first home screen</p>
+
+    <div class="phone" aria-label="Phone showing the live-first home screen: a live game playing, other live games below, and a score ticker">
+      <div class="phone-in">
+        <div class="notch"><i></i></div>
+        <div class="app">
+          <div class="statusbar"><span>9:41</span><span>5G ▮▮▮</span></div>
+          <div class="appbar"><span class="appname">Live Now</span><span class="prov">✓ TV provider</span></div>
+          <div class="video">
+            <img class="shot" src="game.png" alt="Live football game, receiver and defender going for the ball in the end zone">
+            <div class="live">LIVE</div>
+            <div class="clock">Q4 · 2:11</div>
+            <div class="bar"><i></i></div>
+          </div>
+          <div class="nowplaying"><b>Now playing</b><span>Sunday Football · Included with your TV provider</span></div>
+          <div class="also">Also live now</div>
+          <div class="row"><span class="lg">NBA</span><span class="tm">Suns 88 · 84 Spurs</span><span class="w">▶ Watch</span></div>
+          <div class="row"><span class="lg">NCAAF</span><span class="tm">Tigers 14 · 10 Owls</span><span class="w">▶ Watch</span></div>
+          <div class="row"><span class="lg">NHL</span><span class="tm">Stars 2 · 1 Wild</span><span class="w">▶ Watch</span></div>
+        </div>
+        <div class="ticker">
+          <div class="ticker-track">
+            <span class="chip on">▶ SUN FOOTBALL · Q4</span><span class="chip">NBA · SUNS 88–84</span><span class="chip">NCAAF · TIGERS 14–10</span><span class="chip">NHL · STARS 2–1</span><span class="chip">TENNIS · SET 2</span>
+            <span class="chip on">▶ SUN FOOTBALL · Q4</span><span class="chip">NBA · SUNS 88–84</span><span class="chip">NCAAF · TIGERS 14–10</span><span class="chip">NHL · STARS 2–1</span><span class="chip">TENNIS · SET 2</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Tap any score in the ticker to switch games.</p>
+  </header>
+
+
+  <!-- 2. VALUE PROP -->
+  <section class="benefits">
+    <div class="tag">2 · Value proposition</div>
+    <h2>Less searching. More watching.</h2>
+    <p class="pain">Right now, finding a game you can actually stream means digging through tabs while the score updates without you.</p>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
+      <div><q>I open the app and the game is just… on.</q><p>No digging through menus or tabs to find what's streaming.</p></div>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M9 11l2 2 4-4"/></svg></div>
+      <div><q>I only see what I can actually watch.</q><p>It knows my provider, so no more tapping a game and hitting a paywall.</p></div>
+    </div>
+    <div class="card">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M3 12h18M3 6h18M3 18h12"/></svg></div>
+      <div><q>I never miss what's happening on other channels.</q><p>The live ticker shows every score and game, and I can switch with one tap.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. HOW IT WORKS -->
+  <section class="steps">
+    <div class="tag">3 · How it works</div>
+    <h2>Three taps to tip-off.</h2>
+    <div class="step"><div class="num">1</div><div><h3>Sign in once with your TV provider.</h3><p>We remember it so you never have to again.</p></div></div>
+    <div class="step"><div class="num">2</div><div><h3>Open the app and live sports start playing.</h3><p>Your landing page shows what's on right now.</p></div></div>
+    <div class="step"><div class="num">3</div><div><h3>Tap the ticker to switch games.</h3><p>Scores and other live events scroll along the bottom. Tap one and you're watching.</p></div></div>
+  </section>
+
+  <!-- 4. INCENTIVE + CTA -->
+  <section class="cta">
+    <div class="tag">4 · Incentive + CTA</div>
+    <div class="display">1 month of ESPN+ free.</div>
+    <p>Sign up before launch and get a free month of ESPN+, plus early access to the live-first home screen before everyone else.</p>
+    <a class="btn" href="#signup">Get live sports + my free month</a>
+  </section>
+
+  <!-- 5. LEAD FORM -->
+  <section class="signup" id="signup">
+    <div class="tag">5 · Lead form</div>
+    <h2>Save your seat for launch day.</h2>
+    <div class="after">Sign up</div>
+    <div id="formwrap">
+      <form id="form" novalidate>
+        <label for="email">Enter your email to get live sports and 1 free month of ESPN+</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+        <button class="btn" type="submit">Get live sports + my free month</button>
+        <p class="fine">Works with your existing ESPN account. Unsubscribe anytime. (Class concept: no email is stored.)</p>
+      </form>
+      <div class="print-label after">After you sign up</div>
+      <div class="thanks" role="status" aria-live="polite">
+        <div class="check"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg></div>
+        <h3>You're in!</h3>
+        <p>Watch your inbox on launch day for your free month of ESPN+ and early access. Then open the app and let the game come to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FOOTER -->
+  <footer>
+    <div class="tag" style="background:rgba(255,255,255,.12);color:#fff">6 · Footer</div>
+    <p class="foot-main">Concept for MKT 337H. Not affiliated with ESPN.</p>
+    <div class="foot-grid">
+      <div><h4>Launch plan</h4>
+        <b>Rented:</b> TikTok and X, because fans already scroll highlight clips and live score posts there during games.<br>
+        <b>Owned:</b> an in-app banner on the ESPN Scores tab, because that's exactly where fans go hunting for a game to watch.<br>
+        <b>Metric:</b> signups per 1,000 page visits.</div>
+      <div><h4>AI disclosure</h4>
+        I chose the app, pain point, feature, headline, incentive and button. Claude drafted the rest of the copy and built the layout. I supplied the game photo (class use only). No ESPN logos or user data.</div>
+    </div>
+  </footer>
+</main>
+<script>
+  document.getElementById('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var em = document.getElementById('email');
+    if(!em.value || !em.checkValidity()){ em.focus(); em.style.borderColor='#D00000'; return; }
+    document.getElementById('formwrap').classList.add('done');
+  });
+</script>
+</body>
+</html>
